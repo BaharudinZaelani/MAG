@@ -2,8 +2,8 @@
 namespace AplicationConfig;
 
 class App{
-    function __construct()
+    public function __construct($data)
     {
-        echo "hallo world";
+        echo "hallo world" . $data;
     }
 }

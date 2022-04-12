@@ -1,8 +1,8 @@
 {
     "name": "bahar/mag",
-    "description": "RestAPI with bahar",
+    "description": "Mag Restful Api",
     "type": "project",
-    "license": "MIT",
+    "license": "GPL",
     "autoload": {
         "psr-4": {
             "Bahar\\Mag\\": "src/"

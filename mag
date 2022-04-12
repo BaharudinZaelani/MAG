@@ -1,4 +1,10 @@
 <?php 
-require_once __DIR__ . '/vendor/autoload.php';
+$pathAutoload = __DIR__ . '\src\autoload.php';
+require_once $pathAutoload;
+
+
 use AplicationConfig\App;
-use AplicationConfig\Connection\Connection;
+$app = new App("zaw");
+
+
+echo $pathAutoload;
