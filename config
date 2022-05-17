@@ -1,0 +1,21 @@
+<?php 
+
+if( isset($_SERVER['REQUEST_SCHEME']) ){
+    $pex = explode('/', $_SERVER['REQUEST_URI']);
+    $project_name = $pex[1];
+    $uri = $_SERVER['HTTP_HOST'] . '/' . $project_name;
+}else {
+    $uri = '127.0.0.1:3000'; // or localhost:8000
+}
+define("SERVER", $uri);
+define("BASE", "http://" . $uri); 
+
+// Database Config
+define("HOST", "localhost");
+define("USER", "root");
+define("PASS", "");
+define("DB_NAME", "zawnime"); // db-name
+
+// config
+define("SECRET_KEY", "baharganteng123asasjkdh9103247jn9nyn7c8fesyj");
+define("TOKEN", "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJuYW1lIjoiYmFoYXJjZW5haCJ9.yUMqnHbdjyIDdLclYfSNv2jC1UZFPZ1utazH9SJyyvU");

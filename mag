@@ -1,10 +1,89 @@
 <?php 
-$pathAutoload = __DIR__ . '\src\autoload.php';
-require_once $pathAutoload;
+include 'app/init.php';
+use Carbon\Carbon;
+
+$db = new Database();
+$dt = Carbon::now();
+// key cli
+$key = $argv;
+
+include 'migrate/table.php';
+include 'migrate/seed.php';
+if( isset($key[1]) ){
+    
+    // create database
+    if ( $key[1] == "create:db" ){
+        if ( isset($key[2]) ){
+            // file name
+            $file = 'config';
+            $content = file_get_contents($file);
+
+            // create db
+            $db->query("CREATE DATABASE IF NOT EXISTS " . $key[2]);
+            $db->execute();
+            echo "[Bahar DB] Database " . $key[2] . " has been created\n";
+
+            // config edit
+            $cc = 'define("DB_NAME", "'. DB_NAME .'"); // db-name';
+            $tmpSide = 'define("DB_NAME", "'. $key[2] .'"); // db-name';
+            if( strpos($content, $cc) !== false ){
+                file_put_contents($file,str_replace($cc, $tmpSide, file_get_contents($file)));
+            }
+        }
+    }
+
+    // drop database    
+    if ( $key[1] == "drop:db" ){
+        $db->query("DROP DATABASE " . DB_NAME);
+        $db->execute();
+        echo "[Bahar DB] Database " . DB_NAME . " has been dropped\n";
+    }
+
+    // create table
+    if ( $key[1] == "migrate" ){
+
+        // create table
+        $query = '';
+        foreach ($table as $key => $value) {
+            echo "[Bahar DB] Creating table " . $key . "\n";
+            $query = "CREATE TABLE $key (";
+            foreach ($value as $key => $value) {
+                $query .= "$key $value, ";
+            }
+            $query .= ");";
+            $query = str_replace(", );", ");", $query);
+            $db->query($query);
+            $db->execute();
+        }
+    }
+
+    // create seeder
+    if ( $key[1] == "seed" ){
+        // create seeder
+        $query = '';
+        foreach ($users as $key => $value) {
+            echo "[Bahar DB] Creating seeder " . $key . "\n";
+            $query = "INSERT INTO $key (";
+            foreach ($value as $key => $c) {
+                $query .= "$key, ";
+            }
+            $query .= ") VALUES (";
+            $query = str_replace(", )", ")", $query);
+            foreach ($value as $key => $row) {
+                $query .= "'$row', ";
+            }
+            $query .= ");";
+            $query = str_replace(", );", ");", $query);
+            $db->query($query);
+            $db->execute();
+        }
+    }
 
 
-use AplicationConfig\App;
-$app = new App("zaw");
-
-
-echo $pathAutoload;
+    // start server
+    if ( $key[1] == "serve" ){
+        echo "[Bahar DB] Starting server\n";
+        $command = "php -S ". SERVER ." -t " . __DIR__ ;
+        shell_exec($command);
+    }
+}

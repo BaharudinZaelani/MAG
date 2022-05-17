@@ -1,18 +1,15 @@
 {
-    "name": "bahar/mag",
-    "description": "Mag Restful Api",
-    "type": "project",
-    "license": "GPL",
-    "autoload": {
-        "psr-4": {
-            "Bahar\\Mag\\": "src/"
-        }
-    },
+    "name": "bz/dbcreator",
+    "description": "Simpel database manajemen",
+    "license": "MIT",
     "authors": [
         {
             "name": "Zaelani",
             "email": "bahar32harz@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "firebase/php-jwt": "^6.2",
+        "nesbot/carbon": "^2.58"
+    }
 }
